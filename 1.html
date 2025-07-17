@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Правила Telegram-бота</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e5799, #207cca, #2989d8, #1e5799);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        header {
+            background: #0088cc;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .logo i {
+            font-size: 36px;
+            color: #fff;
+            background: #34b7f1;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f0f2f5;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #6b6b6b;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            color: #0088cc;
+            border-bottom: 3px solid #0088cc;
+            background: white;
+        }
+
+        .content {
+            padding: 30px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .rules-container {
+            display: none;
+        }
+
+        .rules-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .rule {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 12px;
+            background: #f9f9f9;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 4px solid #0088cc;
+        }
+
+        .rule:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            background: white;
+        }
+
+        .icon {
+            font-size: 24px;
+            min-width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .rule-content {
+            flex: 1;
+        }
+
+        .rule-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2a2a2a;
+        }
+
+        .rule-text {
+            color: #4a4a4a;
+            line-height: 1.5;
+        }
+
+        .luck {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: #e3f2fd;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #0088cc;
+            animation: pulse 2s infinite;
+        }
+
+        footer {
+            padding: 20px;
+            text-align: center;
+            color: #6b6b6b;
+            background: #f0f2f5;
+            font-size: 14px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 600px) {
+            .rule {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .icon {
+                margin-bottom: 10px;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .tab {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="logo">
+            <i class="fab fa-telegram"></i>
+            <h1>Правила Telegram-бота</h1>
+        </div>
+    </header>
+
+    <div class="tabs">
+        <div class="tab active" data-lang="ru">Русский</div>
+        <div class="tab" data-lang="en">English</div>
+    </div>
+
+    <div class="content">
+        <!-- Русская версия -->
+        <div class="rules-container active" id="ru-rules">
+            <div class="rule">
+                <div class="icon" style="background-color: #FF6B6B;">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <div class="rule-content">
+                    <div class="rule-title">Подарки в Telegram</div>
+                    <div class="rule-text">Отправленные в Telegram подарки нельзя отменить, вернуть или обменять на
+                        звёзды. Единственная доступная опция - скрыть их из видимости.
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule">
+                <div class="icon" style="background-color: #4ECDC4;">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="rule-content">
+                    <div class="rule-title">Получение NFT</div>
+                    <div class="rule-text">Для получения выигранного NFT необходимо выполнить все условия, которые
+                        указаны ботом.
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule">
+                <div class="icon" style="background-color: #FFD166;">
+                    <i class="fas fa-link"></i>
+                </div>
+                <div class="rule-content">
+                    <div class="rule-title">Передача NFT</div>
+                    <div class="rule-text">Передача прав на NFT осуществляется исключительно через официального партнёра
+                        проекта.
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule">
+                <div class="icon" style="background-color: #6A0572;">
+                    <i class="fas fa-gem"></i>
+                </div>
+                <div class="rule-content">
+                    <div class="rule-title">Внутриигровые бонусы</div>
+                    <div class="rule-text">Начисленные игровые очки и бонусы не подлежат возврату или обмену.</div>
+                </div>
+            </div>
+
+            <div class="rule">
+                <div class="icon" style="background-color: #2F3E46;">
+                    <i class="fas fa-ban"></i>
+                </div>
+                <div class="rule-content">
+                    <div class="rule-title">Запрещённые действия</div>
+                    <div class="rule-text">Строго запрещено использование автоматизированных скриптов (включая DDoS),
+                        ботов или сторонних приложений, которые могут нарушить работу бота.
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule">
+                <div class="icon" style="background-color: #D1495B;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="rule-content">
+                    <div class="rule-title">Нарушения и блокировка</div>
+                    <div class="rule-text">Любые попытки мошенничества, рассылки спама или оскорбления других
+                        пользователей приведут к немедленной блокировке без возврата средств.
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule">
+                <div class="icon" style="background-color: #5B8E7D;">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div class="rule-content">
+                    <div class="rule-title">Права администрации</div>
+                    <div class="rule-text">Администрация оставляет за собой право изменять условия использования и
+                        приостанавливать доступ к боту в экстренных случаях без предварительного уведомления.
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule">
+                <div class="icon" style="background-color: #3A5A40;">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <div class="rule-content">
+                    <div class="rule-title">Хранение данных</div>
+                    <div class="rule-text">Все сообщения и журналы взаимодействий сохраняются для обеспечения
+                        безопасности и могут использоваться при расследовании нарушений.
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule">
+                <div class="icon" style="background-color: #5D2A42;">
+                    <i class="fas fa-dice"></i>
+                </div>
+                <div class="rule-content">
+                    <div class="rule-title">Подтверждение рисков</div>
+                    <div class="rule-text">Запуская прокрутку рулетки, пользователь подтверждает, что осознаёт возможные
+                        риски и использует бота на свой страх и риск.
+                    </div>
+                </div>
+            </div>
+
+            <div class="luck">
+                <i class="fas fa-clover"></i> Всем удачи! <i class="fas fa-clover"></i>
+            </div>
+        </div>
+
+        <!-- Английская версия -->
+        <div class="rules-container" id="en-rules">
+            <div class="rule">
+                <div class="icon" style="background-color: #FF6B6B;">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <div class="rule-content">
+                    <div class="rule-title">Gifts in Telegram</div>
+                    <div class="rule-text">Gifts sent via Telegram cannot be canceled, refunded, or exchanged for stars.
+                        The only available option is to hide them from view.
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule">
+                <div class="icon" style="background-color: #4ECDC4;">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="rule-content">
+                    <div class="rule-title">NFT Redemption</div>
+                    <div class="rule-text">To claim a won NFT, the user must fulfill all conditions specified by the
+                        bot.
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule">
+                <div class="icon" style="background-color: #FFD166;">
+                    <i class="fas fa-link"></i>
+                </div>
+                <div class="rule-content">
+                    <div class="rule-title">NFT Transfer</div>
+                    <div class="rule-text">Transfer of NFT ownership is conducted exclusively through the project's
+                        authorized official partner.
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule">
+                <div class="icon" style="background-color: #6A0572;">
+                    <i class="fas fa-gem"></i>
+                </div>
+                <div class="rule-content">
+                    <div class="rule-title">In-Game Bonuses</div>
+                    <div class="rule-text">Awarded in-game points and bonuses are non-refundable and non-exchangeable.
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="rule">
+                <div class="icon" style="background-color: #2F3E46;">
+                    <i class="fas fa-ban"></i>
+                </div>
+                <div class="rule-content">
+                    <div class="rule-title">Prohibited Actions</div>
+                    <div class="rule-text">The use of automated scripts (including DDoS), bots, or third-party
+                        applications that may disrupt the bot's operation is strictly prohibited.
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule">
+                <div class="icon" style="background-color: #D1495B;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="rule-content">
+                    <div class="rule-title">Violations & Blocking</div>
+                    <div class="rule-text">Any attempts at fraud, spam distribution, or insults towards other users will
+                        result in immediate blocking without refund.
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule">
+                <div class="icon" style="background-color: #5B8E7D;">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div class="rule-content">
+                    <div class="rule-title">Administration Rights</div>
+                    <div class="rule-text">The administration reserves the right to modify terms of use and suspend
+                        access to the bot in emergency cases without prior notice.
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule">
+                <div class="icon" style="background-color: #3A5A40;">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <div class="rule-content">
+                    <div class="rule-title">Data Retention</div>
+                    <div class="rule-text">All messages and interaction logs are stored for security purposes and may be
+                        used in violation investigations.
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule">
+                <div class="icon" style="background-color: #5D2A42;">
+                    <i class="fas fa-dice"></i>
+                </div>
+                <div class="rule-content">
+                    <div class="rule-title">Risk Acknowledgment</div>
+                    <div class="rule-text">By initiating a roulette spin, the user confirms awareness of potential risks
+                        and agrees to use the bot at their own risk.
+                    </div>
+                </div>
+            </div>
+
+            <div class="luck">
+                <i class="fas fa-clover"></i> Good luck to everyone! <i class="fas fa-clover"></i>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Telegram Bot Rules & Guidelines | Updated: July 2024</p>
+    </footer>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.tab');
+        const rulesContainers = document.querySelectorAll('.rules-container');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Удаляем активный класс у всех вкладок
+                tabs.forEach(t => t.classList.remove('active'));
+                // Добавляем активный класс к выбранной вкладке
+                tab.classList.add('active');
+
+                // Скрываем все контейнеры с правилами
+                rulesContainers.forEach(container => {
+                    container.classList.remove('active');
+                });
+
+                // Показываем контейнер с правилами, соответствующий выбранной вкладке
+                const lang = tab.getAttribute('data-lang');
+                document.getElementById(`${lang}-rules`).classList.add('active');
+            });
+        });
+    });
+</script>
+</body>
+</html>
